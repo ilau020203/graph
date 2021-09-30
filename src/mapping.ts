@@ -12,9 +12,36 @@ import {
   ReservesManaged,
   ReservesUpdated,
   RewardsMinted,
-  Withdrawal
+  Withdrawal,
+  DepositCall,
+  WithdrawCall
 } from "../generated/Treasury/Treasury"
-import { ExampleEntity } from "../generated/schema"
+import { ExampleEntity,DepositEntity,DepositFunctionEntity ,DebtEntity, ReservesManagedEntity,RewardsMintedEntity} from "../generated/schema"
+import { toDecimal } from "./utils/Decimals"
+import {totalStakedAdded}from "./utils/YearsTotalStaked"
+
+/***Действия:**
+
+- Deposit — депонирует резервы / позволяет утвержденным адресам депонировать актив для OHM. Параметры для агрегирования: sender, token, amount, value.
+- Withdrawal — выводит резервы / позволяет утвержденным адресам сжигать OHM для резервов. Параметры для агрегирования: sender, token, amount, value.
+- Debt creation — позволяет утвержденным адресам заимствовать резервы. Параметры для агрегирования: debtor, token, amount, value.
+- Debt repay — позволяет утвержденным адресам погашать заимствованные резервы либо резервами, либо OHM. Параметры для агрегирования: debtor, token, amount, value.
+- Manage reserves — позволяет утвержденным адресам выводить активы. Параметры для агрегирования: manager (роль для ликвидного или резервного менеджера - скорее всего, кто-то из команды или внешний контракт), token, amount.
+- Mint rewards — отправляет вознаграждения за epoch в staking контракт. Параметры для агрегирования:  caller (sender), recipient, amount.
+
+**Действия по оценке резервов:**
+
+- Audit reserves — оценка общих резервов (токены резервов + токены ликвидности), проводимая внешним менеджером.  Параметры для агрегирования:  total reserves.
+- Update reserves — обновить общую стоимость резервов. Параметры для агрегирования: total reserves.
+
+**Действия по управлению:**
+
+- Change queued — любые изменения, касающиеся управления очередью.
+- Change activated — произошли какие-либо изменения, касающиеся управления (например, кто может расходовать резервы).
+*/
+
+
+
 
 export function handleChangeActivated(event: ChangeActivated): void {
   // Entities can be loaded from the store using a string ID; this ID
@@ -100,22 +127,97 @@ export function handleChangeActivated(event: ChangeActivated): void {
 
 export function handleChangeQueued(event: ChangeQueued): void {}
 
-export function handleCreateDebt(event: CreateDebt): void {}
+export function handleCreateDebt(event: CreateDebt): void {
+  let debt = new DebtEntity(event.transaction.from.toHex())
+  debt.value= toDecimal(event.params.value, 18); 
+  debt.amount = toDecimal(event.params.amount, 18);
+  debt.debtor =event.params.debtor;
+  debt.token =event.params.token;
+  debt.creation=true;
+  debt.save();
+}
 
-export function handleDeposit(event: Deposit): void {}
+export function handleDeposit(event: Deposit): void {
+  let deposit = new DepositEntity(event.transaction.hash.toHex());
+  deposit.timestamp= event.block.timestamp;
+  deposit.address = event.params.token;
+  deposit.value =toDecimal(event.params.value, 18); 
+  deposit.amount = toDecimal(event.params.amount, 18);
+  deposit.save();
+}
+
+
+export function handleDepositFunction(call: DepositCall): void {
+  let id = call.transaction.hash.toHex();
+  let event = DepositEntity.load(id);
+  let deposit = new DepositFunctionEntity(id);
+  deposit.value=event?event.value:toDecimal(BigInt.zero(),0);
+  deposit.amount= toDecimal(call.inputs._amount, 18);
+  deposit.sender =call.from;
+  deposit.timestamp= call.block.timestamp;
+  deposit.profit= toDecimal(call.inputs._profit, 18);
+  deposit.isDeposit=true;
+  deposit.save();
+}
 
 export function handleOwnershipPulled(event: OwnershipPulled): void {}
 
 export function handleOwnershipPushed(event: OwnershipPushed): void {}
 
-export function handleRepayDebt(event: RepayDebt): void {}
+export function handleRepayDebt(event: RepayDebt): void {
+  let debt = new DebtEntity(event.transaction.from.toHex())
+  debt.value= toDecimal(event.params.value, 18); 
+  debt.amount = toDecimal(event.params.amount, 18);
+  debt.debtor =event.params.debtor;
+  debt.token =event.params.token;
+  debt.creation=false;
+  debt.save();
+}
 
-export function handleReservesAudited(event: ReservesAudited): void {}
+export function handleReservesAudited(event: ReservesAudited): void {
+  totalStakedAdded(toDecimal(event.params.totalReserves, 18),true,event.block.timestamp);
+}
 
-export function handleReservesManaged(event: ReservesManaged): void {}
+export function handleReservesManaged(event: ReservesManaged): void {
+  let reservesManaged=new ReservesManagedEntity(event.transaction.hash.toHex());
+  reservesManaged.token= event.params.token;
+  reservesManaged.amount=toDecimal(event.params.amount, 18);
+  reservesManaged.timestamp=event.block.timestamp;
+  reservesManaged.save();
+}
 
-export function handleReservesUpdated(event: ReservesUpdated): void {}
 
-export function handleRewardsMinted(event: RewardsMinted): void {}
+export function handleReservesUpdated(event: ReservesUpdated): void {
+  totalStakedAdded(toDecimal(event.params.totalReserves, 18),false,event.block.timestamp);
+}
 
-export function handleWithdrawal(event: Withdrawal): void {}
+export function handleRewardsMinted(event: RewardsMinted): void {
+  let reservesManaged=new RewardsMintedEntity(event.transaction.hash.toHex());
+  reservesManaged.recipient= event.params.recipient;
+  reservesManaged.caller = event.params.caller;
+  reservesManaged.amount=toDecimal(event.params.amount, 18);
+  reservesManaged.timestamp=event.block.timestamp;
+  reservesManaged.save();
+}
+
+export function handleWithdrawal(event: Withdrawal): void {
+  let withdrawal = new DepositEntity(event.transaction.hash.toHex());
+  withdrawal.timestamp= event.block.timestamp;
+  withdrawal.address = event.params.token;
+  withdrawal.value =toDecimal(event.params.value, 18); 
+  withdrawal.amount = toDecimal(event.params.amount, 18);
+  withdrawal.save();
+}
+
+
+export function handleWithdrawFunction(call: WithdrawCall): void {
+  let id = call.transaction.hash.toHex();
+  let event = DepositEntity.load(id);
+  let deposit = new DepositFunctionEntity(id);
+  deposit.value=event?event.value:toDecimal(BigInt.zero(),0);
+  deposit.amount= toDecimal(call.inputs._amount, 18);
+  deposit.sender =call.from;
+  deposit.timestamp= call.block.timestamp;
+  deposit.isDeposit=false;
+  deposit.save();
+}

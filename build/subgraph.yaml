@@ -1,6 +1,6 @@
 specVersion: 0.0.2
 schema:
-  file: ./schema.graphql
+  file: schema.graphql
 dataSources:
   - kind: ethereum/contract
     name: Treasury
@@ -28,7 +28,7 @@ dataSources:
         - Withdrawal
       abis:
         - name: Treasury
-          file: ./abis/Treasury.json
+          file: Treasury\abis\Treasury.json
       eventHandlers:
         - event: ChangeActivated(indexed uint8,address,bool)
           handler: handleChangeActivated
@@ -59,4 +59,4 @@ dataSources:
           handler: handleDepositFunction
         - function: withdraw(uint256,address)
           handler: handleWithdrawFunction
-      file: ./src/mapping.ts
+      file: Treasury\Treasury.wasm
