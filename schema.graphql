@@ -53,35 +53,52 @@ type ReservesManagedEntity @entity {
 
 type ReservesYearsEntity @entity{
   id: ID!
+  timestamp: BigInt!
+  startTotalReserves: BigDecimal!
+  finalTotalReserves: BigDecimal!
   maxTotalReserves: BigDecimal!
   minTotalReserves: BigDecimal!
   medianTotalReserves: BigDecimal!
+  audited: Boolean!
   reserversDays:[ReservesDaysEntity!]!
 }
 
 type ReservesDaysEntity @entity{
   id: ID!
+  timestamp: BigInt!
+  startTotalReserves: BigDecimal!
+  finalTotalReserves: BigDecimal!
   maxTotalReserves: BigDecimal!
   minTotalReserves: BigDecimal!
   medianTotalReserves: BigDecimal!
+  audited: Boolean!
   reserversHours:[ReservesHoursEntity!]!
 }
 
 type ReservesHoursEntity @entity{
   id: ID!
+  timestamp: BigInt!
+  startTotalReserves: BigDecimal!
+  finalTotalReserves: BigDecimal!
   maxTotalReserves: BigDecimal!
   minTotalReserves: BigDecimal!
   medianTotalReserves: BigDecimal!
+  audited: Boolean!
   reserversMinutes:[ReservesMinutsEntity!]!
 }
 
 
 type  ReservesMinutsEntity @entity{
   id: ID!
+  timestamp: BigInt!
+  startTotalReserves: BigDecimal!
+  finalTotalReserves: BigDecimal!
   maxTotalReserves: BigDecimal!
   minTotalReserves: BigDecimal!
   medianTotalReserves: BigDecimal!
-  reservesSecons:[ReservesEntity!]! 
+  reservesSeconds:[ReservesEntity!]! 
+  audited: Boolean!
+
 }
 
 
@@ -91,3 +108,4 @@ type ReservesEntity @entity{
   timestamp: BigInt!
   audited: Boolean!
 }
+

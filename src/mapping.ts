@@ -18,7 +18,7 @@ import {
 } from "../generated/Treasury/Treasury"
 import { ExampleEntity,DepositEntity,DepositFunctionEntity ,DebtEntity, ReservesManagedEntity,RewardsMintedEntity} from "../generated/schema"
 import { toDecimal } from "./utils/Decimals"
-import {totalStakedAdded}from "./utils/YearsTotalStaked"
+import {totalReservesAdded}from "./utils/YearsTotalReserves"
 
 /***Действия:**
 
@@ -175,7 +175,7 @@ export function handleRepayDebt(event: RepayDebt): void {
 }
 
 export function handleReservesAudited(event: ReservesAudited): void {
-  totalStakedAdded(toDecimal(event.params.totalReserves, 18),true,event.block.timestamp);
+  totalReservesAdded(toDecimal(event.params.totalReserves, 18),true,event.block.timestamp);
 }
 
 export function handleReservesManaged(event: ReservesManaged): void {
@@ -188,7 +188,7 @@ export function handleReservesManaged(event: ReservesManaged): void {
 
 
 export function handleReservesUpdated(event: ReservesUpdated): void {
-  totalStakedAdded(toDecimal(event.params.totalReserves, 18),false,event.block.timestamp);
+  totalReservesAdded(toDecimal(event.params.totalReserves, 18),false,event.block.timestamp);
 }
 
 export function handleRewardsMinted(event: RewardsMinted): void {

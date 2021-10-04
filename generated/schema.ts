@@ -510,9 +510,13 @@ export class ReservesYearsEntity extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
+    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
+    this.set("startTotalReserves", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("finalTotalReserves", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("maxTotalReserves", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("minTotalReserves", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("medianTotalReserves", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("audited", Value.fromBoolean(false));
     this.set("reserversDays", Value.fromStringArray(new Array(0)));
   }
 
@@ -544,6 +548,33 @@ export class ReservesYearsEntity extends Entity {
     this.set("id", Value.fromString(value));
   }
 
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value!.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get startTotalReserves(): BigDecimal {
+    let value = this.get("startTotalReserves");
+    return value!.toBigDecimal();
+  }
+
+  set startTotalReserves(value: BigDecimal) {
+    this.set("startTotalReserves", Value.fromBigDecimal(value));
+  }
+
+  get finalTotalReserves(): BigDecimal {
+    let value = this.get("finalTotalReserves");
+    return value!.toBigDecimal();
+  }
+
+  set finalTotalReserves(value: BigDecimal) {
+    this.set("finalTotalReserves", Value.fromBigDecimal(value));
+  }
+
   get maxTotalReserves(): BigDecimal {
     let value = this.get("maxTotalReserves");
     return value!.toBigDecimal();
@@ -571,6 +602,15 @@ export class ReservesYearsEntity extends Entity {
     this.set("medianTotalReserves", Value.fromBigDecimal(value));
   }
 
+  get audited(): boolean {
+    let value = this.get("audited");
+    return value!.toBoolean();
+  }
+
+  set audited(value: boolean) {
+    this.set("audited", Value.fromBoolean(value));
+  }
+
   get reserversDays(): Array<string> {
     let value = this.get("reserversDays");
     return value!.toStringArray();
@@ -586,9 +626,13 @@ export class ReservesDaysEntity extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
+    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
+    this.set("startTotalReserves", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("finalTotalReserves", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("maxTotalReserves", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("minTotalReserves", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("medianTotalReserves", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("audited", Value.fromBoolean(false));
     this.set("reserversHours", Value.fromStringArray(new Array(0)));
   }
 
@@ -620,6 +664,33 @@ export class ReservesDaysEntity extends Entity {
     this.set("id", Value.fromString(value));
   }
 
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value!.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get startTotalReserves(): BigDecimal {
+    let value = this.get("startTotalReserves");
+    return value!.toBigDecimal();
+  }
+
+  set startTotalReserves(value: BigDecimal) {
+    this.set("startTotalReserves", Value.fromBigDecimal(value));
+  }
+
+  get finalTotalReserves(): BigDecimal {
+    let value = this.get("finalTotalReserves");
+    return value!.toBigDecimal();
+  }
+
+  set finalTotalReserves(value: BigDecimal) {
+    this.set("finalTotalReserves", Value.fromBigDecimal(value));
+  }
+
   get maxTotalReserves(): BigDecimal {
     let value = this.get("maxTotalReserves");
     return value!.toBigDecimal();
@@ -647,6 +718,15 @@ export class ReservesDaysEntity extends Entity {
     this.set("medianTotalReserves", Value.fromBigDecimal(value));
   }
 
+  get audited(): boolean {
+    let value = this.get("audited");
+    return value!.toBoolean();
+  }
+
+  set audited(value: boolean) {
+    this.set("audited", Value.fromBoolean(value));
+  }
+
   get reserversHours(): Array<string> {
     let value = this.get("reserversHours");
     return value!.toStringArray();
@@ -662,9 +742,13 @@ export class ReservesHoursEntity extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
+    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
+    this.set("startTotalReserves", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("finalTotalReserves", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("maxTotalReserves", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("minTotalReserves", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("medianTotalReserves", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("audited", Value.fromBoolean(false));
     this.set("reserversMinutes", Value.fromStringArray(new Array(0)));
   }
 
@@ -696,6 +780,33 @@ export class ReservesHoursEntity extends Entity {
     this.set("id", Value.fromString(value));
   }
 
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value!.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get startTotalReserves(): BigDecimal {
+    let value = this.get("startTotalReserves");
+    return value!.toBigDecimal();
+  }
+
+  set startTotalReserves(value: BigDecimal) {
+    this.set("startTotalReserves", Value.fromBigDecimal(value));
+  }
+
+  get finalTotalReserves(): BigDecimal {
+    let value = this.get("finalTotalReserves");
+    return value!.toBigDecimal();
+  }
+
+  set finalTotalReserves(value: BigDecimal) {
+    this.set("finalTotalReserves", Value.fromBigDecimal(value));
+  }
+
   get maxTotalReserves(): BigDecimal {
     let value = this.get("maxTotalReserves");
     return value!.toBigDecimal();
@@ -723,6 +834,15 @@ export class ReservesHoursEntity extends Entity {
     this.set("medianTotalReserves", Value.fromBigDecimal(value));
   }
 
+  get audited(): boolean {
+    let value = this.get("audited");
+    return value!.toBoolean();
+  }
+
+  set audited(value: boolean) {
+    this.set("audited", Value.fromBoolean(value));
+  }
+
   get reserversMinutes(): Array<string> {
     let value = this.get("reserversMinutes");
     return value!.toStringArray();
@@ -738,10 +858,14 @@ export class ReservesMinutsEntity extends Entity {
     super();
     this.set("id", Value.fromString(id));
 
+    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
+    this.set("startTotalReserves", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("finalTotalReserves", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("maxTotalReserves", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("minTotalReserves", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("medianTotalReserves", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("reservesSecons", Value.fromStringArray(new Array(0)));
+    this.set("reservesSeconds", Value.fromStringArray(new Array(0)));
+    this.set("audited", Value.fromBoolean(false));
   }
 
   save(): void {
@@ -772,6 +896,33 @@ export class ReservesMinutsEntity extends Entity {
     this.set("id", Value.fromString(value));
   }
 
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value!.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get startTotalReserves(): BigDecimal {
+    let value = this.get("startTotalReserves");
+    return value!.toBigDecimal();
+  }
+
+  set startTotalReserves(value: BigDecimal) {
+    this.set("startTotalReserves", Value.fromBigDecimal(value));
+  }
+
+  get finalTotalReserves(): BigDecimal {
+    let value = this.get("finalTotalReserves");
+    return value!.toBigDecimal();
+  }
+
+  set finalTotalReserves(value: BigDecimal) {
+    this.set("finalTotalReserves", Value.fromBigDecimal(value));
+  }
+
   get maxTotalReserves(): BigDecimal {
     let value = this.get("maxTotalReserves");
     return value!.toBigDecimal();
@@ -799,13 +950,22 @@ export class ReservesMinutsEntity extends Entity {
     this.set("medianTotalReserves", Value.fromBigDecimal(value));
   }
 
-  get reservesSecons(): Array<string> {
-    let value = this.get("reservesSecons");
+  get reservesSeconds(): Array<string> {
+    let value = this.get("reservesSeconds");
     return value!.toStringArray();
   }
 
-  set reservesSecons(value: Array<string>) {
-    this.set("reservesSecons", Value.fromStringArray(value));
+  set reservesSeconds(value: Array<string>) {
+    this.set("reservesSeconds", Value.fromStringArray(value));
+  }
+
+  get audited(): boolean {
+    let value = this.get("audited");
+    return value!.toBoolean();
+  }
+
+  set audited(value: boolean) {
+    this.set("audited", Value.fromBoolean(value));
   }
 }
 
