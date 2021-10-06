@@ -13,22 +13,11 @@ type DepositEntity @entity {
   timestamp: BigInt!
 }
 
-type DepositFunctionEntity @entity
-{ 
-  id: ID!
-  token: Bytes!
-  sender: Bytes!
-  profit: BigDecimal
-  value:  BigDecimal!
-  amount: BigDecimal!
-  timestamp: BigInt!
-  isDeposit:Boolean!
-}
 
 type DebtEntity @entity {
   id: ID!
   debtor: Bytes!
-  token: Bytes!
+  token: Token!
   amount: BigDecimal!
   value:  BigDecimal!
   creation: Boolean!
@@ -109,3 +98,88 @@ type ReservesEntity @entity{
   audited: Boolean!
 }
 
+type Token @entity{
+  id: ID!
+  timestamp: BigInt!
+}
+
+type DepositFunctionYearEntity @entity
+{ 
+  id: ID!
+  token: Token!
+  sender:  [Bytes!]!
+  profit: BigDecimal
+  value:  BigDecimal!
+  amount: BigDecimal!
+  sumProfit: BigDecimal!
+  sumValue: BigDecimal!
+  sumAmount: BigDecimal!
+  timestamp: BigInt!
+  isDeposit:Boolean!
+  dayDeposit:[DepositFunctionDayEntity!]!
+}
+
+type DepositFunctionDayEntity @entity
+{ 
+  id: ID!
+  token: Token!
+  sender:  [Bytes!]!
+  profit: BigDecimal
+  value:  BigDecimal!
+  amount: BigDecimal!
+  sumProfit: BigDecimal!
+  sumValue: BigDecimal!
+  sumAmount: BigDecimal!
+  timestamp: BigInt!
+  isDeposit:Boolean!
+  hourDeposit:[DepositFunctionHourEntity!]!
+}
+
+type DepositFunctionHourEntity @entity
+{ 
+  id: ID!
+  token: Token!
+  sender: [Bytes!]!
+  profit: BigDecimal
+  value:  BigDecimal!
+  amount: BigDecimal!
+  sumProfit: BigDecimal!
+  sumValue: BigDecimal!
+  sumAmount: BigDecimal!
+  timestamp: BigInt!
+  isDeposit:Boolean!
+  minuteDeposit:[DepositFunctionMinuteEntity!]!
+}
+
+type DepositFunctionMinuteEntity @entity
+{ 
+  id: ID!
+  token: Token!
+  sender: [Bytes!]!
+  profit: BigDecimal
+  value:  BigDecimal!
+  amount: BigDecimal!
+  sumProfit: BigDecimal!
+  sumValue: BigDecimal!
+  sumAmount: BigDecimal!
+  timestamp: BigInt!
+  isDeposit:Boolean!
+  secondDeposit:[DepositFunctionEntity!]!
+}
+
+
+
+type DepositFunctionEntity @entity
+{ 
+  id: ID!
+  token: Token!
+  sender: Bytes!
+  profit: BigDecimal
+  value:  BigDecimal!
+  amount: BigDecimal!
+  sumProfit: BigDecimal!
+  sumValue: BigDecimal!
+  sumAmount: BigDecimal!
+  timestamp: BigInt!
+  isDeposit:Boolean!
+}

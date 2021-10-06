@@ -150,129 +150,13 @@ export class DepositEntity extends Entity {
   }
 }
 
-export class DepositFunctionEntity extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-
-    this.set("token", Value.fromBytes(Bytes.empty()));
-    this.set("sender", Value.fromBytes(Bytes.empty()));
-    this.set("value", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("amount", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
-    this.set("isDeposit", Value.fromBoolean(false));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(
-      id != null,
-      "Cannot save DepositFunctionEntity entity without an ID"
-    );
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        "Cannot save DepositFunctionEntity entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
-      );
-      store.set("DepositFunctionEntity", id.toString(), this);
-    }
-  }
-
-  static load(id: string): DepositFunctionEntity | null {
-    return changetype<DepositFunctionEntity | null>(
-      store.get("DepositFunctionEntity", id)
-    );
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get token(): Bytes {
-    let value = this.get("token");
-    return value!.toBytes();
-  }
-
-  set token(value: Bytes) {
-    this.set("token", Value.fromBytes(value));
-  }
-
-  get sender(): Bytes {
-    let value = this.get("sender");
-    return value!.toBytes();
-  }
-
-  set sender(value: Bytes) {
-    this.set("sender", Value.fromBytes(value));
-  }
-
-  get profit(): BigDecimal | null {
-    let value = this.get("profit");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigDecimal();
-    }
-  }
-
-  set profit(value: BigDecimal | null) {
-    if (!value) {
-      this.unset("profit");
-    } else {
-      this.set("profit", Value.fromBigDecimal(<BigDecimal>value));
-    }
-  }
-
-  get value(): BigDecimal {
-    let value = this.get("value");
-    return value!.toBigDecimal();
-  }
-
-  set value(value: BigDecimal) {
-    this.set("value", Value.fromBigDecimal(value));
-  }
-
-  get amount(): BigDecimal {
-    let value = this.get("amount");
-    return value!.toBigDecimal();
-  }
-
-  set amount(value: BigDecimal) {
-    this.set("amount", Value.fromBigDecimal(value));
-  }
-
-  get timestamp(): BigInt {
-    let value = this.get("timestamp");
-    return value!.toBigInt();
-  }
-
-  set timestamp(value: BigInt) {
-    this.set("timestamp", Value.fromBigInt(value));
-  }
-
-  get isDeposit(): boolean {
-    let value = this.get("isDeposit");
-    return value!.toBoolean();
-  }
-
-  set isDeposit(value: boolean) {
-    this.set("isDeposit", Value.fromBoolean(value));
-  }
-}
-
 export class DebtEntity extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
 
     this.set("debtor", Value.fromBytes(Bytes.empty()));
-    this.set("token", Value.fromBytes(Bytes.empty()));
+    this.set("token", Value.fromString(""));
     this.set("amount", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("value", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("creation", Value.fromBoolean(false));
@@ -314,13 +198,13 @@ export class DebtEntity extends Entity {
     this.set("debtor", Value.fromBytes(value));
   }
 
-  get token(): Bytes {
+  get token(): string {
     let value = this.get("token");
-    return value!.toBytes();
+    return value!.toString();
   }
 
-  set token(value: Bytes) {
-    this.set("token", Value.fromBytes(value));
+  set token(value: string) {
+    this.set("token", Value.fromString(value));
   }
 
   get amount(): BigDecimal {
@@ -1030,5 +914,819 @@ export class ReservesEntity extends Entity {
 
   set audited(value: boolean) {
     this.set("audited", Value.fromBoolean(value));
+  }
+}
+
+export class Token extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Token entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save Token entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("Token", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Token | null {
+    return changetype<Token | null>(store.get("Token", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value!.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+}
+
+export class DepositFunctionYearEntity extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("token", Value.fromString(""));
+    this.set("sender", Value.fromBytesArray(new Array(0)));
+    this.set("value", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("amount", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("sumProfit", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("sumValue", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("sumAmount", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
+    this.set("isDeposit", Value.fromBoolean(false));
+    this.set("dayDeposit", Value.fromStringArray(new Array(0)));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(
+      id != null,
+      "Cannot save DepositFunctionYearEntity entity without an ID"
+    );
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save DepositFunctionYearEntity entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("DepositFunctionYearEntity", id.toString(), this);
+    }
+  }
+
+  static load(id: string): DepositFunctionYearEntity | null {
+    return changetype<DepositFunctionYearEntity | null>(
+      store.get("DepositFunctionYearEntity", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get token(): string {
+    let value = this.get("token");
+    return value!.toString();
+  }
+
+  set token(value: string) {
+    this.set("token", Value.fromString(value));
+  }
+
+  get sender(): Array<Bytes> {
+    let value = this.get("sender");
+    return value!.toBytesArray();
+  }
+
+  set sender(value: Array<Bytes>) {
+    this.set("sender", Value.fromBytesArray(value));
+  }
+
+  get profit(): BigDecimal | null {
+    let value = this.get("profit");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigDecimal();
+    }
+  }
+
+  set profit(value: BigDecimal | null) {
+    if (!value) {
+      this.unset("profit");
+    } else {
+      this.set("profit", Value.fromBigDecimal(<BigDecimal>value));
+    }
+  }
+
+  get value(): BigDecimal {
+    let value = this.get("value");
+    return value!.toBigDecimal();
+  }
+
+  set value(value: BigDecimal) {
+    this.set("value", Value.fromBigDecimal(value));
+  }
+
+  get amount(): BigDecimal {
+    let value = this.get("amount");
+    return value!.toBigDecimal();
+  }
+
+  set amount(value: BigDecimal) {
+    this.set("amount", Value.fromBigDecimal(value));
+  }
+
+  get sumProfit(): BigDecimal {
+    let value = this.get("sumProfit");
+    return value!.toBigDecimal();
+  }
+
+  set sumProfit(value: BigDecimal) {
+    this.set("sumProfit", Value.fromBigDecimal(value));
+  }
+
+  get sumValue(): BigDecimal {
+    let value = this.get("sumValue");
+    return value!.toBigDecimal();
+  }
+
+  set sumValue(value: BigDecimal) {
+    this.set("sumValue", Value.fromBigDecimal(value));
+  }
+
+  get sumAmount(): BigDecimal {
+    let value = this.get("sumAmount");
+    return value!.toBigDecimal();
+  }
+
+  set sumAmount(value: BigDecimal) {
+    this.set("sumAmount", Value.fromBigDecimal(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value!.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get isDeposit(): boolean {
+    let value = this.get("isDeposit");
+    return value!.toBoolean();
+  }
+
+  set isDeposit(value: boolean) {
+    this.set("isDeposit", Value.fromBoolean(value));
+  }
+
+  get dayDeposit(): Array<string> {
+    let value = this.get("dayDeposit");
+    return value!.toStringArray();
+  }
+
+  set dayDeposit(value: Array<string>) {
+    this.set("dayDeposit", Value.fromStringArray(value));
+  }
+}
+
+export class DepositFunctionDayEntity extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("token", Value.fromString(""));
+    this.set("sender", Value.fromBytesArray(new Array(0)));
+    this.set("value", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("amount", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("sumProfit", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("sumValue", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("sumAmount", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
+    this.set("isDeposit", Value.fromBoolean(false));
+    this.set("hourDeposit", Value.fromStringArray(new Array(0)));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(
+      id != null,
+      "Cannot save DepositFunctionDayEntity entity without an ID"
+    );
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save DepositFunctionDayEntity entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("DepositFunctionDayEntity", id.toString(), this);
+    }
+  }
+
+  static load(id: string): DepositFunctionDayEntity | null {
+    return changetype<DepositFunctionDayEntity | null>(
+      store.get("DepositFunctionDayEntity", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get token(): string {
+    let value = this.get("token");
+    return value!.toString();
+  }
+
+  set token(value: string) {
+    this.set("token", Value.fromString(value));
+  }
+
+  get sender(): Array<Bytes> {
+    let value = this.get("sender");
+    return value!.toBytesArray();
+  }
+
+  set sender(value: Array<Bytes>) {
+    this.set("sender", Value.fromBytesArray(value));
+  }
+
+  get profit(): BigDecimal | null {
+    let value = this.get("profit");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigDecimal();
+    }
+  }
+
+  set profit(value: BigDecimal | null) {
+    if (!value) {
+      this.unset("profit");
+    } else {
+      this.set("profit", Value.fromBigDecimal(<BigDecimal>value));
+    }
+  }
+
+  get value(): BigDecimal {
+    let value = this.get("value");
+    return value!.toBigDecimal();
+  }
+
+  set value(value: BigDecimal) {
+    this.set("value", Value.fromBigDecimal(value));
+  }
+
+  get amount(): BigDecimal {
+    let value = this.get("amount");
+    return value!.toBigDecimal();
+  }
+
+  set amount(value: BigDecimal) {
+    this.set("amount", Value.fromBigDecimal(value));
+  }
+
+  get sumProfit(): BigDecimal {
+    let value = this.get("sumProfit");
+    return value!.toBigDecimal();
+  }
+
+  set sumProfit(value: BigDecimal) {
+    this.set("sumProfit", Value.fromBigDecimal(value));
+  }
+
+  get sumValue(): BigDecimal {
+    let value = this.get("sumValue");
+    return value!.toBigDecimal();
+  }
+
+  set sumValue(value: BigDecimal) {
+    this.set("sumValue", Value.fromBigDecimal(value));
+  }
+
+  get sumAmount(): BigDecimal {
+    let value = this.get("sumAmount");
+    return value!.toBigDecimal();
+  }
+
+  set sumAmount(value: BigDecimal) {
+    this.set("sumAmount", Value.fromBigDecimal(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value!.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get isDeposit(): boolean {
+    let value = this.get("isDeposit");
+    return value!.toBoolean();
+  }
+
+  set isDeposit(value: boolean) {
+    this.set("isDeposit", Value.fromBoolean(value));
+  }
+
+  get hourDeposit(): Array<string> {
+    let value = this.get("hourDeposit");
+    return value!.toStringArray();
+  }
+
+  set hourDeposit(value: Array<string>) {
+    this.set("hourDeposit", Value.fromStringArray(value));
+  }
+}
+
+export class DepositFunctionHourEntity extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("token", Value.fromString(""));
+    this.set("sender", Value.fromBytesArray(new Array(0)));
+    this.set("value", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("amount", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("sumProfit", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("sumValue", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("sumAmount", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
+    this.set("isDeposit", Value.fromBoolean(false));
+    this.set("minuteDeposit", Value.fromStringArray(new Array(0)));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(
+      id != null,
+      "Cannot save DepositFunctionHourEntity entity without an ID"
+    );
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save DepositFunctionHourEntity entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("DepositFunctionHourEntity", id.toString(), this);
+    }
+  }
+
+  static load(id: string): DepositFunctionHourEntity | null {
+    return changetype<DepositFunctionHourEntity | null>(
+      store.get("DepositFunctionHourEntity", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get token(): string {
+    let value = this.get("token");
+    return value!.toString();
+  }
+
+  set token(value: string) {
+    this.set("token", Value.fromString(value));
+  }
+
+  get sender(): Array<Bytes> {
+    let value = this.get("sender");
+    return value!.toBytesArray();
+  }
+
+  set sender(value: Array<Bytes>) {
+    this.set("sender", Value.fromBytesArray(value));
+  }
+
+  get profit(): BigDecimal | null {
+    let value = this.get("profit");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigDecimal();
+    }
+  }
+
+  set profit(value: BigDecimal | null) {
+    if (!value) {
+      this.unset("profit");
+    } else {
+      this.set("profit", Value.fromBigDecimal(<BigDecimal>value));
+    }
+  }
+
+  get value(): BigDecimal {
+    let value = this.get("value");
+    return value!.toBigDecimal();
+  }
+
+  set value(value: BigDecimal) {
+    this.set("value", Value.fromBigDecimal(value));
+  }
+
+  get amount(): BigDecimal {
+    let value = this.get("amount");
+    return value!.toBigDecimal();
+  }
+
+  set amount(value: BigDecimal) {
+    this.set("amount", Value.fromBigDecimal(value));
+  }
+
+  get sumProfit(): BigDecimal {
+    let value = this.get("sumProfit");
+    return value!.toBigDecimal();
+  }
+
+  set sumProfit(value: BigDecimal) {
+    this.set("sumProfit", Value.fromBigDecimal(value));
+  }
+
+  get sumValue(): BigDecimal {
+    let value = this.get("sumValue");
+    return value!.toBigDecimal();
+  }
+
+  set sumValue(value: BigDecimal) {
+    this.set("sumValue", Value.fromBigDecimal(value));
+  }
+
+  get sumAmount(): BigDecimal {
+    let value = this.get("sumAmount");
+    return value!.toBigDecimal();
+  }
+
+  set sumAmount(value: BigDecimal) {
+    this.set("sumAmount", Value.fromBigDecimal(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value!.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get isDeposit(): boolean {
+    let value = this.get("isDeposit");
+    return value!.toBoolean();
+  }
+
+  set isDeposit(value: boolean) {
+    this.set("isDeposit", Value.fromBoolean(value));
+  }
+
+  get minuteDeposit(): Array<string> {
+    let value = this.get("minuteDeposit");
+    return value!.toStringArray();
+  }
+
+  set minuteDeposit(value: Array<string>) {
+    this.set("minuteDeposit", Value.fromStringArray(value));
+  }
+}
+
+export class DepositFunctionMinuteEntity extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("token", Value.fromString(""));
+    this.set("sender", Value.fromBytesArray(new Array(0)));
+    this.set("value", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("amount", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("sumProfit", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("sumValue", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("sumAmount", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
+    this.set("isDeposit", Value.fromBoolean(false));
+    this.set("secondDeposit", Value.fromStringArray(new Array(0)));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(
+      id != null,
+      "Cannot save DepositFunctionMinuteEntity entity without an ID"
+    );
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save DepositFunctionMinuteEntity entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("DepositFunctionMinuteEntity", id.toString(), this);
+    }
+  }
+
+  static load(id: string): DepositFunctionMinuteEntity | null {
+    return changetype<DepositFunctionMinuteEntity | null>(
+      store.get("DepositFunctionMinuteEntity", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get token(): string {
+    let value = this.get("token");
+    return value!.toString();
+  }
+
+  set token(value: string) {
+    this.set("token", Value.fromString(value));
+  }
+
+  get sender(): Array<Bytes> {
+    let value = this.get("sender");
+    return value!.toBytesArray();
+  }
+
+  set sender(value: Array<Bytes>) {
+    this.set("sender", Value.fromBytesArray(value));
+  }
+
+  get profit(): BigDecimal | null {
+    let value = this.get("profit");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigDecimal();
+    }
+  }
+
+  set profit(value: BigDecimal | null) {
+    if (!value) {
+      this.unset("profit");
+    } else {
+      this.set("profit", Value.fromBigDecimal(<BigDecimal>value));
+    }
+  }
+
+  get value(): BigDecimal {
+    let value = this.get("value");
+    return value!.toBigDecimal();
+  }
+
+  set value(value: BigDecimal) {
+    this.set("value", Value.fromBigDecimal(value));
+  }
+
+  get amount(): BigDecimal {
+    let value = this.get("amount");
+    return value!.toBigDecimal();
+  }
+
+  set amount(value: BigDecimal) {
+    this.set("amount", Value.fromBigDecimal(value));
+  }
+
+  get sumProfit(): BigDecimal {
+    let value = this.get("sumProfit");
+    return value!.toBigDecimal();
+  }
+
+  set sumProfit(value: BigDecimal) {
+    this.set("sumProfit", Value.fromBigDecimal(value));
+  }
+
+  get sumValue(): BigDecimal {
+    let value = this.get("sumValue");
+    return value!.toBigDecimal();
+  }
+
+  set sumValue(value: BigDecimal) {
+    this.set("sumValue", Value.fromBigDecimal(value));
+  }
+
+  get sumAmount(): BigDecimal {
+    let value = this.get("sumAmount");
+    return value!.toBigDecimal();
+  }
+
+  set sumAmount(value: BigDecimal) {
+    this.set("sumAmount", Value.fromBigDecimal(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value!.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get isDeposit(): boolean {
+    let value = this.get("isDeposit");
+    return value!.toBoolean();
+  }
+
+  set isDeposit(value: boolean) {
+    this.set("isDeposit", Value.fromBoolean(value));
+  }
+
+  get secondDeposit(): Array<string> {
+    let value = this.get("secondDeposit");
+    return value!.toStringArray();
+  }
+
+  set secondDeposit(value: Array<string>) {
+    this.set("secondDeposit", Value.fromStringArray(value));
+  }
+}
+
+export class DepositFunctionEntity extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("token", Value.fromString(""));
+    this.set("sender", Value.fromBytes(Bytes.empty()));
+    this.set("value", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("amount", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("sumProfit", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("sumValue", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("sumAmount", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
+    this.set("isDeposit", Value.fromBoolean(false));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(
+      id != null,
+      "Cannot save DepositFunctionEntity entity without an ID"
+    );
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save DepositFunctionEntity entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("DepositFunctionEntity", id.toString(), this);
+    }
+  }
+
+  static load(id: string): DepositFunctionEntity | null {
+    return changetype<DepositFunctionEntity | null>(
+      store.get("DepositFunctionEntity", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get token(): string {
+    let value = this.get("token");
+    return value!.toString();
+  }
+
+  set token(value: string) {
+    this.set("token", Value.fromString(value));
+  }
+
+  get sender(): Bytes {
+    let value = this.get("sender");
+    return value!.toBytes();
+  }
+
+  set sender(value: Bytes) {
+    this.set("sender", Value.fromBytes(value));
+  }
+
+  get profit(): BigDecimal | null {
+    let value = this.get("profit");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigDecimal();
+    }
+  }
+
+  set profit(value: BigDecimal | null) {
+    if (!value) {
+      this.unset("profit");
+    } else {
+      this.set("profit", Value.fromBigDecimal(<BigDecimal>value));
+    }
+  }
+
+  get value(): BigDecimal {
+    let value = this.get("value");
+    return value!.toBigDecimal();
+  }
+
+  set value(value: BigDecimal) {
+    this.set("value", Value.fromBigDecimal(value));
+  }
+
+  get amount(): BigDecimal {
+    let value = this.get("amount");
+    return value!.toBigDecimal();
+  }
+
+  set amount(value: BigDecimal) {
+    this.set("amount", Value.fromBigDecimal(value));
+  }
+
+  get sumProfit(): BigDecimal {
+    let value = this.get("sumProfit");
+    return value!.toBigDecimal();
+  }
+
+  set sumProfit(value: BigDecimal) {
+    this.set("sumProfit", Value.fromBigDecimal(value));
+  }
+
+  get sumValue(): BigDecimal {
+    let value = this.get("sumValue");
+    return value!.toBigDecimal();
+  }
+
+  set sumValue(value: BigDecimal) {
+    this.set("sumValue", Value.fromBigDecimal(value));
+  }
+
+  get sumAmount(): BigDecimal {
+    let value = this.get("sumAmount");
+    return value!.toBigDecimal();
+  }
+
+  set sumAmount(value: BigDecimal) {
+    this.set("sumAmount", Value.fromBigDecimal(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value!.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get isDeposit(): boolean {
+    let value = this.get("isDeposit");
+    return value!.toBoolean();
+  }
+
+  set isDeposit(value: boolean) {
+    this.set("isDeposit", Value.fromBoolean(value));
   }
 }

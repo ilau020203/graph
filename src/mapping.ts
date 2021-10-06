@@ -1,4 +1,6 @@
-import { BigInt } from "@graphprotocol/graph-ts"
+import { BigInt,log ,Bytes} from "@graphprotocol/graph-ts"
+import {loadToken} from "./utils/TokenController"
+
 import {
   Treasury,
   ChangeActivated,
@@ -19,6 +21,7 @@ import {
 import { ExampleEntity,DepositEntity,DepositFunctionEntity ,DebtEntity, ReservesManagedEntity,RewardsMintedEntity} from "../generated/schema"
 import { toDecimal } from "./utils/Decimals"
 import {totalReservesAdded}from "./utils/YearsTotalReserves"
+import {DepositAdded}from "./utils/YearsDeposit"
 
 /***Действия:**
 
@@ -132,7 +135,8 @@ export function handleCreateDebt(event: CreateDebt): void {
   debt.value= toDecimal(event.params.value, 18); 
   debt.amount = toDecimal(event.params.amount, 18);
   debt.debtor =event.params.debtor;
-  debt.token =event.params.token;
+  let token =loadToken(event.params.token,event.block.timestamp);
+  debt.token =token.id;
   debt.creation=true;
   debt.save();
 }
@@ -150,14 +154,10 @@ export function handleDeposit(event: Deposit): void {
 export function handleDepositFunction(call: DepositCall): void {
   let id = call.transaction.hash.toHex();
   let event = DepositEntity.load(id);
-  let deposit = new DepositFunctionEntity(id);
-  deposit.value=event?event.value:toDecimal(BigInt.zero(),0);
-  deposit.amount= toDecimal(call.inputs._amount, 18);
-  deposit.sender =call.from;
-  deposit.timestamp= call.block.timestamp;
-  deposit.profit= toDecimal(call.inputs._profit, 18);
-  deposit.isDeposit=true;
-  deposit.save();
+  let token =loadToken(call.inputs._token,call.block.timestamp);
+
+  DepositAdded(call.from,token.id,toDecimal(call.inputs._profit, 18),event?event.value:toDecimal(BigInt.zero(),0), toDecimal(call.inputs._amount, 18),call.block.timestamp,true);
+ 
 }
 
 export function handleOwnershipPulled(event: OwnershipPulled): void {}
@@ -168,14 +168,16 @@ export function handleRepayDebt(event: RepayDebt): void {
   let debt = new DebtEntity(event.transaction.from.toHex())
   debt.value= toDecimal(event.params.value, 18); 
   debt.amount = toDecimal(event.params.amount, 18);
-  debt.debtor =event.params.debtor;
-  debt.token =event.params.token;
+  debt.debtor = event.params.debtor;
+  let token =loadToken(event.params.token,event.block.timestamp);
+  debt.token =token.id;
   debt.creation=false;
   debt.save();
 }
 
 export function handleReservesAudited(event: ReservesAudited): void {
-  totalReservesAdded(toDecimal(event.params.totalReserves, 18),true,event.block.timestamp);
+  log.error("__----__",[event.block.timestamp.toString()]);
+  totalReservesAdded(toDecimal(event.params.totalReserves, 9),true,event.block.timestamp);
 }
 
 export function handleReservesManaged(event: ReservesManaged): void {
@@ -188,7 +190,7 @@ export function handleReservesManaged(event: ReservesManaged): void {
 
 
 export function handleReservesUpdated(event: ReservesUpdated): void {
-  totalReservesAdded(toDecimal(event.params.totalReserves, 18),false,event.block.timestamp);
+  totalReservesAdded(toDecimal(event.params.totalReserves, 9),false,event.block.timestamp);
 }
 
 export function handleRewardsMinted(event: RewardsMinted): void {
@@ -202,7 +204,7 @@ export function handleRewardsMinted(event: RewardsMinted): void {
 
 export function handleWithdrawal(event: Withdrawal): void {
   let withdrawal = new DepositEntity(event.transaction.hash.toHex());
-  withdrawal.timestamp= event.block.timestamp;
+  withdrawal.timestamp = event.block.timestamp;
   withdrawal.address = event.params.token;
   withdrawal.value =toDecimal(event.params.value, 18); 
   withdrawal.amount = toDecimal(event.params.amount, 18);

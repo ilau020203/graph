@@ -16,7 +16,7 @@ type DepositEntity @entity {
 type DepositFunctionEntity @entity
 { 
   id: ID!
-  token: Bytes!
+  token: Token!
   sender: Bytes!
   profit: BigDecimal
   value:  BigDecimal!
@@ -28,7 +28,7 @@ type DepositFunctionEntity @entity
 type DebtEntity @entity {
   id: ID!
   debtor: Bytes!
-  token: Bytes!
+  token: Token!
   amount: BigDecimal!
   value:  BigDecimal!
   creation: Boolean!
@@ -109,3 +109,7 @@ type ReservesEntity @entity{
   audited: Boolean!
 }
 
+type Token @entity{
+  id: ID!
+  timestamp: BigInt!
+}
