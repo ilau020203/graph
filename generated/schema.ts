@@ -968,6 +968,7 @@ export class DepositFunctionYearEntity extends Entity {
 
     this.set("token", Value.fromString(""));
     this.set("sender", Value.fromStringArray(new Array(0)));
+    this.set("profit", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("value", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("amount", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("sumProfit", Value.fromBigDecimal(BigDecimal.zero()));
@@ -1027,21 +1028,13 @@ export class DepositFunctionYearEntity extends Entity {
     this.set("sender", Value.fromStringArray(value));
   }
 
-  get profit(): BigDecimal | null {
+  get profit(): BigDecimal {
     let value = this.get("profit");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigDecimal();
-    }
+    return value!.toBigDecimal();
   }
 
-  set profit(value: BigDecimal | null) {
-    if (!value) {
-      this.unset("profit");
-    } else {
-      this.set("profit", Value.fromBigDecimal(<BigDecimal>value));
-    }
+  set profit(value: BigDecimal) {
+    this.set("profit", Value.fromBigDecimal(value));
   }
 
   get value(): BigDecimal {
@@ -1124,6 +1117,7 @@ export class DepositFunctionDayEntity extends Entity {
 
     this.set("token", Value.fromString(""));
     this.set("sender", Value.fromStringArray(new Array(0)));
+    this.set("profit", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("value", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("amount", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("sumProfit", Value.fromBigDecimal(BigDecimal.zero()));
@@ -1183,21 +1177,13 @@ export class DepositFunctionDayEntity extends Entity {
     this.set("sender", Value.fromStringArray(value));
   }
 
-  get profit(): BigDecimal | null {
+  get profit(): BigDecimal {
     let value = this.get("profit");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigDecimal();
-    }
+    return value!.toBigDecimal();
   }
 
-  set profit(value: BigDecimal | null) {
-    if (!value) {
-      this.unset("profit");
-    } else {
-      this.set("profit", Value.fromBigDecimal(<BigDecimal>value));
-    }
+  set profit(value: BigDecimal) {
+    this.set("profit", Value.fromBigDecimal(value));
   }
 
   get value(): BigDecimal {
@@ -1280,6 +1266,7 @@ export class DepositFunctionHourEntity extends Entity {
 
     this.set("token", Value.fromString(""));
     this.set("sender", Value.fromStringArray(new Array(0)));
+    this.set("profit", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("value", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("amount", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("sumProfit", Value.fromBigDecimal(BigDecimal.zero()));
@@ -1339,21 +1326,13 @@ export class DepositFunctionHourEntity extends Entity {
     this.set("sender", Value.fromStringArray(value));
   }
 
-  get profit(): BigDecimal | null {
+  get profit(): BigDecimal {
     let value = this.get("profit");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigDecimal();
-    }
+    return value!.toBigDecimal();
   }
 
-  set profit(value: BigDecimal | null) {
-    if (!value) {
-      this.unset("profit");
-    } else {
-      this.set("profit", Value.fromBigDecimal(<BigDecimal>value));
-    }
+  set profit(value: BigDecimal) {
+    this.set("profit", Value.fromBigDecimal(value));
   }
 
   get value(): BigDecimal {
@@ -1436,6 +1415,7 @@ export class DepositFunctionMinuteEntity extends Entity {
 
     this.set("token", Value.fromString(""));
     this.set("sender", Value.fromStringArray(new Array(0)));
+    this.set("profit", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("value", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("amount", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("sumProfit", Value.fromBigDecimal(BigDecimal.zero()));
@@ -1495,21 +1475,13 @@ export class DepositFunctionMinuteEntity extends Entity {
     this.set("sender", Value.fromStringArray(value));
   }
 
-  get profit(): BigDecimal | null {
+  get profit(): BigDecimal {
     let value = this.get("profit");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigDecimal();
-    }
+    return value!.toBigDecimal();
   }
 
-  set profit(value: BigDecimal | null) {
-    if (!value) {
-      this.unset("profit");
-    } else {
-      this.set("profit", Value.fromBigDecimal(<BigDecimal>value));
-    }
+  set profit(value: BigDecimal) {
+    this.set("profit", Value.fromBigDecimal(value));
   }
 
   get value(): BigDecimal {
@@ -1592,6 +1564,7 @@ export class DepositFunctionEntity extends Entity {
 
     this.set("token", Value.fromString(""));
     this.set("sender", Value.fromBytes(Bytes.empty()));
+    this.set("profit", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("value", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("amount", Value.fromBigDecimal(BigDecimal.zero()));
     this.set("sumProfit", Value.fromBigDecimal(BigDecimal.zero()));
@@ -1650,21 +1623,13 @@ export class DepositFunctionEntity extends Entity {
     this.set("sender", Value.fromBytes(value));
   }
 
-  get profit(): BigDecimal | null {
+  get profit(): BigDecimal {
     let value = this.get("profit");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toBigDecimal();
-    }
+    return value!.toBigDecimal();
   }
 
-  set profit(value: BigDecimal | null) {
-    if (!value) {
-      this.unset("profit");
-    } else {
-      this.set("profit", Value.fromBigDecimal(<BigDecimal>value));
-    }
+  set profit(value: BigDecimal) {
+    this.set("profit", Value.fromBigDecimal(value));
   }
 
   get value(): BigDecimal {

@@ -108,7 +108,7 @@ type DepositFunctionYearEntity @entity
   id: ID!
   token: Token!
   sender:  [String!]!
-  profit: BigDecimal
+  profit: BigDecimal!
   value:  BigDecimal!
   amount: BigDecimal!
   sumProfit: BigDecimal!
@@ -124,7 +124,7 @@ type DepositFunctionDayEntity @entity
   id: ID!
   token: Token!
   sender:  [String!]!
-  profit: BigDecimal
+  profit: BigDecimal!
   value:  BigDecimal!
   amount: BigDecimal!
   sumProfit: BigDecimal!
@@ -140,7 +140,7 @@ type DepositFunctionHourEntity @entity
   id: ID!
   token: Token!
   sender: [String!]!
-  profit: BigDecimal
+  profit: BigDecimal!
   value:  BigDecimal!
   amount: BigDecimal!
   sumProfit: BigDecimal!
@@ -156,7 +156,7 @@ type DepositFunctionMinuteEntity @entity
   id: ID!
   token: Token!
   sender: [String!]!
-  profit: BigDecimal
+  profit: BigDecimal!
   value:  BigDecimal!
   amount: BigDecimal!
   sumProfit: BigDecimal!
@@ -174,7 +174,7 @@ type DepositFunctionEntity @entity
   id: ID!
   token: Token!
   sender: Bytes!
-  profit: BigDecimal
+  profit: BigDecimal!
   value:  BigDecimal!
   amount: BigDecimal!
   sumProfit: BigDecimal!
