@@ -30,7 +30,9 @@ export function DepositAdded(sender: Bytes,token:string,profit:BigDecimal,value:
             year.sumAmount=amount;
             year.isDeposit=isDeposit;
             year.token=token;
-            year.sender.push(sender);
+            let buf=year.sender;
+            buf.push(sender.toHexString());
+            year.sender=buf;
             year.save();
         }else{
             year= new DepositFunctionYearEntity(token+date.getUTCFullYear().toString()+DEPOSIT_SUFFIX);
@@ -43,17 +45,21 @@ export function DepositAdded(sender: Bytes,token:string,profit:BigDecimal,value:
             year.sumAmount=amount.plus(lastYear.sumAmount);
             year.isDeposit=isDeposit;
             year.token=token;
-            year.sender.push(sender);
-            year.save();
+            year.sender=new Array<string>(0);
+            let buf=year.sender;
+            buf.push(sender.toHexString());
+            year.sender=buf;
         }
     }else {
-        year.sumProfit=profit;
-        year.sumValue=value;
-        year.sumAmount=amount;
+        year.sumProfit=profit.plus(year.profit);
+        year.sumValue=year.value.plus(value);
+        year.sumAmount=year.amount.plus(amount);
         year.value=year.value.plus(value);
         year.amount=year.amount.plus(amount);
-        year.profit=year.profit!=null?profit.plus(year.profit):toDecimal(BigInt.zero(),0);
-        year.sender.push(sender);
+        year.profit=profit.plus(year.profit);
+        let buf=year.sender;
+        buf.push(sender.toHexString());
+        year.sender=buf;
         year.save();
     }
     
@@ -72,19 +78,21 @@ export function DepositAdded(sender: Bytes,token:string,profit:BigDecimal,value:
         day.sumAmount=year.sumAmount;
         day.sumProfit=year.sumProfit;
         day.sumValue=year.sumValue;
-        day.sender.push(sender);
+        let buf=day.sender;
+        buf.push(sender.toHexString());
+        day.sender=buf;
         day.save();
         days.push(day.id);
         year.dayDeposit=days;
         year.save();
     }else {
-        day.profit=day.profit!=null?profit.plus(day.profit):toDecimal(BigInt.zero(),0);
+        // day.profit=day.profit!=null?profit.plus(day.profit):toDecimal(BigInt.zero(),0);
         day.value=value.plus(day.value);
         day.amount=amount.plus(day.amount);
         day.sumAmount=year.sumAmount;
         day.sumProfit=year.sumProfit;
         day.sumValue=year.sumValue;
-        day.sender.push(sender);
+        day.sender.push(sender.toHexString());
         day.save();
     }
     
@@ -93,26 +101,28 @@ export function DepositAdded(sender: Bytes,token:string,profit:BigDecimal,value:
     if(hour==null) {
         hour = new DepositFunctionHourEntity(token+date.getUTCFullYear().toString()+"-"+getNumberDayFromDate(date).toString()+"-"+date.getUTCHours().toString()+DEPOSIT_SUFFIX);
         hour.timestamp=timeStamp;
-        hour.profit=profit;
+        // hour.profit=profit;
         hour.value=value;;
         hour.amount=amount;
         hour.token=token;
         hour.sumAmount=year.sumAmount;
         hour.sumProfit=year.sumProfit;
         hour.sumValue=year.sumValue;
-        hour.sender.push(sender);
+        let buf=hour.sender;
+        buf.push(sender.toHexString());
+        hour.sender=buf;
         hour.save();
         hours.push(hour.id);
         day.hourDeposit=hours;
         day.save();
     }else {
-        hour.profit=hour.profit!=null?profit.plus(hour.profit):toDecimal(BigInt.zero(),0);
+        // hour.profit=hour.profit!=null?profit.plus(hour.profit):toDecimal(BigInt.zero(),0);
         hour.value=value.plus(hour.value);
         hour.amount=amount.plus(hour.amount);
         hour.sumAmount=year.sumAmount;
         hour.sumProfit=year.sumProfit;
         hour.sumValue=year.sumValue;
-        hour.sender.push(sender);
+        hour.sender.push(sender.toHexString());
         hour.save();
     }
     
@@ -125,7 +135,9 @@ export function DepositAdded(sender: Bytes,token:string,profit:BigDecimal,value:
         minute.value=value;;
         minute.amount=amount;
         minute.token=token;
-        minute.sender.push(sender);
+        let buf=minute.sender;
+        buf.push(sender.toHexString());
+        minute.sender=buf;
         minute.sumAmount=year.sumAmount;
         minute.sumProfit=year.sumProfit;
         minute.sumValue=year.sumValue;
@@ -135,15 +147,15 @@ export function DepositAdded(sender: Bytes,token:string,profit:BigDecimal,value:
         hour.save();
     }else {
         // minute.profit=minute!=null?minute.profit!=null?profit.plus(minute.profit):toDecimal(BigInt.zero(),0):toDecimal(BigInt.zero(),0);
-        if(minute.profit!=null) {
-        minute.profit=minute.profit.plus(profit);
-        }
+        // if(minute.profit!=null) {
+        // minute.profit=minute.profit.plus(profit);
+        // }
         minute.value=value.plus(minute.value);
         minute.amount=amount.plus(minute.amount);
         minute.sumAmount=year.sumAmount;
         minute.sumProfit=year.sumProfit;
         minute.sumValue=year.sumValue;
-        minute.sender.push(sender);
+        minute.sender.push(sender.toHexString());
         minute.save();
     }
 

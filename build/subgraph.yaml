@@ -59,4 +59,6 @@ dataSources:
           handler: handleDepositFunction
         - function: withdraw(uint256,address)
           handler: handleWithdrawFunction
+        - function: manage(address,uint256)
+          handler: handleManageFunction
       file: Treasury\Treasury.wasm

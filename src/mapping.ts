@@ -16,12 +16,16 @@ import {
   RewardsMinted,
   Withdrawal,
   DepositCall,
-  WithdrawCall
+  WithdrawCall,
+  ManageCall
 } from "../generated/Treasury/Treasury"
 import { ExampleEntity,DepositEntity,DepositFunctionEntity ,DebtEntity, ReservesManagedEntity,RewardsMintedEntity} from "../generated/schema"
 import { toDecimal } from "./utils/Decimals"
 import {totalReservesAdded}from "./utils/YearsTotalReserves"
 import {DepositAdded}from "./utils/YearsDeposit"
+import {ManageAdded}from "./utils/YearsManage"
+
+
 
 /***Действия:**
 
@@ -182,7 +186,8 @@ export function handleReservesAudited(event: ReservesAudited): void {
 
 export function handleReservesManaged(event: ReservesManaged): void {
   let reservesManaged=new ReservesManagedEntity(event.transaction.hash.toHex());
-  reservesManaged.token= event.params.token;
+  
+   reservesManaged.token= event.params.token;
   reservesManaged.amount=toDecimal(event.params.amount, 18);
   reservesManaged.timestamp=event.block.timestamp;
   reservesManaged.save();
@@ -222,4 +227,8 @@ export function handleWithdrawFunction(call: WithdrawCall): void {
   deposit.timestamp= call.block.timestamp;
   deposit.isDeposit=false;
   deposit.save();
+}
+export function handleManageFunction(call:ManageCall):void{
+  let token =loadToken(call.inputs._token,call.block.timestamp);
+  ManageAdded(call.from,token.id,toDecimal(call.inputs._amount,9),call.block.timestamp);
 }
