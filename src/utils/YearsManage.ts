@@ -4,12 +4,18 @@ import {ManageEntity,ManageMinuteEntity,ManageHourEntity,ManageDayEntity , Manag
 import {MANAGE_SUFFIX} from "./Suffix"
 import {toDecimal}from "./Decimals"
 
-/*sender: Bytes!
-  profit: BigDecimal
-  value:  BigDecimal!
-  amount: BigDecimal!*/
 
 
+/**
+ * add information about Manage function to Subgraph
+ * @param sender 
+ * @param token 
+ * @param profit 
+ * @param value 
+ * @param amount 
+ * @param timeStamp 
+ * @param isDeposit 
+ */
 export function ManageAdded(sender: Bytes,token:string,amount:BigDecimal,timeStamp:BigInt):void {
 
     let number:i64 =Number.parseInt(timeStamp.toString(),10) as i64;

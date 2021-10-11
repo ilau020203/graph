@@ -2,7 +2,13 @@ import { BigDecimal, BigInt, Bytes } from '@graphprotocol/graph-ts';
 import {getNumberDayFromDate} from './Dates'
 import {RewardsMintedEntity,MinuteRewardsMintedEntity,HourRewardsMintedEntity,DayRewardsMintedEntity , YearRewardsMintedEntity} from "../../generated/schema"
 import {REWARDS_MINTED_SUFFIX} from "./Suffix"
-
+/**
+ * add Rewards Minted to Subgraph
+ * @param amount 
+ * @param caller 
+ * @param recipient 
+ * @param timeStamp 
+ */
 export function rewardsMintedAdded(amount: BigDecimal,caller:Bytes,recipient:Bytes,timeStamp:BigInt):void{
 
     let number:i64 =Number.parseInt(timeStamp.toString(),10) as i64;

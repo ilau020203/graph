@@ -3,6 +3,12 @@ import {getNumberDayFromDate} from './Dates'
 import {ReservesEntity,ReservesMinutsEntity,ReservesHoursEntity,ReservesDaysEntity , ReservesYearsEntity} from "../../generated/schema"
 import {TOTAL_RESERVES_SUFFIX} from "./Suffix"
 
+/**
+ * add total reserve  to Subgraph
+ * @param totalReserves 
+ * @param audited 
+ * @param timeStamp 
+ */
 export function totalReservesAdded(totalReserves: BigDecimal,audited:boolean,timeStamp:BigInt):void{
 
     let number:i64 =Number.parseInt(timeStamp.toString(),10) as i64;

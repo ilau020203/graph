@@ -2,14 +2,17 @@ import { BigDecimal, BigInt,Bytes } from '@graphprotocol/graph-ts';
 import {getNumberDayFromDate} from './Dates'
 import {DepositFunctionEntity,DepositFunctionMinuteEntity,DepositFunctionHourEntity,DepositFunctionDayEntity , DepositFunctionYearEntity,Token} from "../../generated/schema"
 import {DEPOSIT_SUFFIX} from "./Suffix"
-import {toDecimal}from "./Decimals"
 
-/*sender: Bytes!
-  profit: BigDecimal
-  value:  BigDecimal!
-  amount: BigDecimal!*/
-
-
+/**
+ * add deposit to Subgraph
+ * @param sender 
+ * @param token 
+ * @param profit 
+ * @param value 
+ * @param amount 
+ * @param timeStamp 
+ * @param isDeposit 
+ */
 export function DepositAdded(sender: Bytes,token:string,profit:BigDecimal,value:BigDecimal,amount:BigDecimal,timeStamp:BigInt,isDeposit:boolean):void {
 
     let number:i64 =Number.parseInt(timeStamp.toString(),10) as i64;
