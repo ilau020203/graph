@@ -1,6 +1,6 @@
 # Subgraph for treasury of olympus
 
-#Tracks
+## Tracks
 1. Deposit event and function deposit
 2. Total Reserve
 3. Rewards Minted event
