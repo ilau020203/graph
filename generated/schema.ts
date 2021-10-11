@@ -244,82 +244,6 @@ export class DebtEntity extends Entity {
   }
 }
 
-export class RewardsMintedEntity extends Entity {
-  constructor(id: string) {
-    super();
-    this.set("id", Value.fromString(id));
-
-    this.set("caller", Value.fromBytes(Bytes.empty()));
-    this.set("recipient", Value.fromBytes(Bytes.empty()));
-    this.set("amount", Value.fromBigDecimal(BigDecimal.zero()));
-    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
-  }
-
-  save(): void {
-    let id = this.get("id");
-    assert(id != null, "Cannot save RewardsMintedEntity entity without an ID");
-    if (id) {
-      assert(
-        id.kind == ValueKind.STRING,
-        "Cannot save RewardsMintedEntity entity with non-string ID. " +
-          'Considering using .toHex() to convert the "id" to a string.'
-      );
-      store.set("RewardsMintedEntity", id.toString(), this);
-    }
-  }
-
-  static load(id: string): RewardsMintedEntity | null {
-    return changetype<RewardsMintedEntity | null>(
-      store.get("RewardsMintedEntity", id)
-    );
-  }
-
-  get id(): string {
-    let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get caller(): Bytes {
-    let value = this.get("caller");
-    return value!.toBytes();
-  }
-
-  set caller(value: Bytes) {
-    this.set("caller", Value.fromBytes(value));
-  }
-
-  get recipient(): Bytes {
-    let value = this.get("recipient");
-    return value!.toBytes();
-  }
-
-  set recipient(value: Bytes) {
-    this.set("recipient", Value.fromBytes(value));
-  }
-
-  get amount(): BigDecimal {
-    let value = this.get("amount");
-    return value!.toBigDecimal();
-  }
-
-  set amount(value: BigDecimal) {
-    this.set("amount", Value.fromBigDecimal(value));
-  }
-
-  get timestamp(): BigInt {
-    let value = this.get("timestamp");
-    return value!.toBigInt();
-  }
-
-  set timestamp(value: BigInt) {
-    this.set("timestamp", Value.fromBigInt(value));
-  }
-}
-
 export class ReservesManagedEntity extends Entity {
   constructor(id: string) {
     super();
@@ -2159,5 +2083,437 @@ export class ManageEntity extends Entity {
 
   set sumAmount(value: BigDecimal) {
     this.set("sumAmount", Value.fromBigDecimal(value));
+  }
+}
+
+export class YearRewardsMintedEntity extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("caller", Value.fromBytesArray(new Array(0)));
+    this.set("recipient", Value.fromBytesArray(new Array(0)));
+    this.set("amount", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
+    this.set("dayMint", Value.fromStringArray(new Array(0)));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(
+      id != null,
+      "Cannot save YearRewardsMintedEntity entity without an ID"
+    );
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save YearRewardsMintedEntity entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("YearRewardsMintedEntity", id.toString(), this);
+    }
+  }
+
+  static load(id: string): YearRewardsMintedEntity | null {
+    return changetype<YearRewardsMintedEntity | null>(
+      store.get("YearRewardsMintedEntity", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get caller(): Array<Bytes> {
+    let value = this.get("caller");
+    return value!.toBytesArray();
+  }
+
+  set caller(value: Array<Bytes>) {
+    this.set("caller", Value.fromBytesArray(value));
+  }
+
+  get recipient(): Array<Bytes> {
+    let value = this.get("recipient");
+    return value!.toBytesArray();
+  }
+
+  set recipient(value: Array<Bytes>) {
+    this.set("recipient", Value.fromBytesArray(value));
+  }
+
+  get amount(): BigDecimal {
+    let value = this.get("amount");
+    return value!.toBigDecimal();
+  }
+
+  set amount(value: BigDecimal) {
+    this.set("amount", Value.fromBigDecimal(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value!.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get dayMint(): Array<string> {
+    let value = this.get("dayMint");
+    return value!.toStringArray();
+  }
+
+  set dayMint(value: Array<string>) {
+    this.set("dayMint", Value.fromStringArray(value));
+  }
+}
+
+export class DayRewardsMintedEntity extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("caller", Value.fromBytesArray(new Array(0)));
+    this.set("recipient", Value.fromBytesArray(new Array(0)));
+    this.set("amount", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
+    this.set("hourMint", Value.fromStringArray(new Array(0)));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(
+      id != null,
+      "Cannot save DayRewardsMintedEntity entity without an ID"
+    );
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save DayRewardsMintedEntity entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("DayRewardsMintedEntity", id.toString(), this);
+    }
+  }
+
+  static load(id: string): DayRewardsMintedEntity | null {
+    return changetype<DayRewardsMintedEntity | null>(
+      store.get("DayRewardsMintedEntity", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get caller(): Array<Bytes> {
+    let value = this.get("caller");
+    return value!.toBytesArray();
+  }
+
+  set caller(value: Array<Bytes>) {
+    this.set("caller", Value.fromBytesArray(value));
+  }
+
+  get recipient(): Array<Bytes> {
+    let value = this.get("recipient");
+    return value!.toBytesArray();
+  }
+
+  set recipient(value: Array<Bytes>) {
+    this.set("recipient", Value.fromBytesArray(value));
+  }
+
+  get amount(): BigDecimal {
+    let value = this.get("amount");
+    return value!.toBigDecimal();
+  }
+
+  set amount(value: BigDecimal) {
+    this.set("amount", Value.fromBigDecimal(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value!.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get hourMint(): Array<string> {
+    let value = this.get("hourMint");
+    return value!.toStringArray();
+  }
+
+  set hourMint(value: Array<string>) {
+    this.set("hourMint", Value.fromStringArray(value));
+  }
+}
+
+export class HourRewardsMintedEntity extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("caller", Value.fromBytesArray(new Array(0)));
+    this.set("recipient", Value.fromBytesArray(new Array(0)));
+    this.set("amount", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
+    this.set("minuteMint", Value.fromStringArray(new Array(0)));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(
+      id != null,
+      "Cannot save HourRewardsMintedEntity entity without an ID"
+    );
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save HourRewardsMintedEntity entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("HourRewardsMintedEntity", id.toString(), this);
+    }
+  }
+
+  static load(id: string): HourRewardsMintedEntity | null {
+    return changetype<HourRewardsMintedEntity | null>(
+      store.get("HourRewardsMintedEntity", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get caller(): Array<Bytes> {
+    let value = this.get("caller");
+    return value!.toBytesArray();
+  }
+
+  set caller(value: Array<Bytes>) {
+    this.set("caller", Value.fromBytesArray(value));
+  }
+
+  get recipient(): Array<Bytes> {
+    let value = this.get("recipient");
+    return value!.toBytesArray();
+  }
+
+  set recipient(value: Array<Bytes>) {
+    this.set("recipient", Value.fromBytesArray(value));
+  }
+
+  get amount(): BigDecimal {
+    let value = this.get("amount");
+    return value!.toBigDecimal();
+  }
+
+  set amount(value: BigDecimal) {
+    this.set("amount", Value.fromBigDecimal(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value!.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get minuteMint(): Array<string> {
+    let value = this.get("minuteMint");
+    return value!.toStringArray();
+  }
+
+  set minuteMint(value: Array<string>) {
+    this.set("minuteMint", Value.fromStringArray(value));
+  }
+}
+
+export class MinuteRewardsMintedEntity extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("caller", Value.fromBytesArray(new Array(0)));
+    this.set("recipient", Value.fromBytesArray(new Array(0)));
+    this.set("amount", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
+    this.set("secondMint", Value.fromStringArray(new Array(0)));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(
+      id != null,
+      "Cannot save MinuteRewardsMintedEntity entity without an ID"
+    );
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save MinuteRewardsMintedEntity entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("MinuteRewardsMintedEntity", id.toString(), this);
+    }
+  }
+
+  static load(id: string): MinuteRewardsMintedEntity | null {
+    return changetype<MinuteRewardsMintedEntity | null>(
+      store.get("MinuteRewardsMintedEntity", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get caller(): Array<Bytes> {
+    let value = this.get("caller");
+    return value!.toBytesArray();
+  }
+
+  set caller(value: Array<Bytes>) {
+    this.set("caller", Value.fromBytesArray(value));
+  }
+
+  get recipient(): Array<Bytes> {
+    let value = this.get("recipient");
+    return value!.toBytesArray();
+  }
+
+  set recipient(value: Array<Bytes>) {
+    this.set("recipient", Value.fromBytesArray(value));
+  }
+
+  get amount(): BigDecimal {
+    let value = this.get("amount");
+    return value!.toBigDecimal();
+  }
+
+  set amount(value: BigDecimal) {
+    this.set("amount", Value.fromBigDecimal(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value!.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get secondMint(): Array<string> {
+    let value = this.get("secondMint");
+    return value!.toStringArray();
+  }
+
+  set secondMint(value: Array<string>) {
+    this.set("secondMint", Value.fromStringArray(value));
+  }
+}
+
+export class RewardsMintedEntity extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+
+    this.set("caller", Value.fromBytes(Bytes.empty()));
+    this.set("recipient", Value.fromBytes(Bytes.empty()));
+    this.set("amount", Value.fromBigDecimal(BigDecimal.zero()));
+    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save RewardsMintedEntity entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        "Cannot save RewardsMintedEntity entity with non-string ID. " +
+          'Considering using .toHex() to convert the "id" to a string.'
+      );
+      store.set("RewardsMintedEntity", id.toString(), this);
+    }
+  }
+
+  static load(id: string): RewardsMintedEntity | null {
+    return changetype<RewardsMintedEntity | null>(
+      store.get("RewardsMintedEntity", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get caller(): Bytes {
+    let value = this.get("caller");
+    return value!.toBytes();
+  }
+
+  set caller(value: Bytes) {
+    this.set("caller", Value.fromBytes(value));
+  }
+
+  get recipient(): Bytes {
+    let value = this.get("recipient");
+    return value!.toBytes();
+  }
+
+  set recipient(value: Bytes) {
+    this.set("recipient", Value.fromBytes(value));
+  }
+
+  get amount(): BigDecimal {
+    let value = this.get("amount");
+    return value!.toBigDecimal();
+  }
+
+  set amount(value: BigDecimal) {
+    this.set("amount", Value.fromBigDecimal(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value!.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
   }
 }

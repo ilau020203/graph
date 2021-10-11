@@ -24,13 +24,7 @@ type DebtEntity @entity {
   timestamp: BigInt!
 }
 
-type RewardsMintedEntity @entity {
-  id: ID!
-  caller : Bytes!
-  recipient: Bytes!
-  amount: BigDecimal!
-  timestamp: BigInt!
-}
+
 
 type ReservesManagedEntity @entity {
   id: ID!
@@ -237,3 +231,52 @@ type ManageEntity @entity{
   amount: BigDecimal!
   sumAmount: BigDecimal!
 }
+
+
+
+type YearRewardsMintedEntity @entity {
+  id: ID!
+  caller : [Bytes!]!
+  recipient:[Bytes!]!
+  amount: BigDecimal!
+  timestamp: BigInt!
+  dayMint:[DayRewardsMintedEntity!]!
+}
+
+type DayRewardsMintedEntity @entity {
+  id: ID!
+  caller :[Bytes!]!
+  recipient:[Bytes!]!
+  amount: BigDecimal!
+  timestamp: BigInt!
+  hourMint:[HourRewardsMintedEntity!]!
+}
+
+type HourRewardsMintedEntity @entity {
+  id: ID!
+  caller : [Bytes!]!
+  recipient: [Bytes!]!
+  amount: BigDecimal!
+  timestamp: BigInt!
+  minuteMint:[MinuteRewardsMintedEntity!]!
+}
+
+type MinuteRewardsMintedEntity @entity {
+  id: ID!
+  caller : [Bytes!]!
+  recipient: [Bytes!]!
+  amount: BigDecimal!
+  timestamp: BigInt!
+  secondMint:[RewardsMintedEntity!]!
+}
+
+
+type RewardsMintedEntity @entity {
+  id: ID!
+  caller : Bytes!
+  recipient: Bytes!
+  amount: BigDecimal!
+  timestamp: BigInt!
+}
+
+

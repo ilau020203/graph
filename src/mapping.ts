@@ -24,7 +24,7 @@ import { toDecimal } from "./utils/Decimals"
 import {totalReservesAdded}from "./utils/YearsTotalReserves"
 import {DepositAdded}from "./utils/YearsDeposit"
 import {ManageAdded}from "./utils/YearsManage"
-
+import {rewardsMintedAdded}from "./utils/YearsRewardsMinted"
 
 
 /***Действия:**
@@ -186,8 +186,7 @@ export function handleReservesAudited(event: ReservesAudited): void {
 
 export function handleReservesManaged(event: ReservesManaged): void {
   let reservesManaged=new ReservesManagedEntity(event.transaction.hash.toHex());
-  
-   reservesManaged.token= event.params.token;
+  reservesManaged.token= event.params.token;
   reservesManaged.amount=toDecimal(event.params.amount, 18);
   reservesManaged.timestamp=event.block.timestamp;
   reservesManaged.save();
@@ -199,12 +198,11 @@ export function handleReservesUpdated(event: ReservesUpdated): void {
 }
 
 export function handleRewardsMinted(event: RewardsMinted): void {
-  let reservesManaged=new RewardsMintedEntity(event.transaction.hash.toHex());
-  reservesManaged.recipient= event.params.recipient;
-  reservesManaged.caller = event.params.caller;
-  reservesManaged.amount=toDecimal(event.params.amount, 18);
-  reservesManaged.timestamp=event.block.timestamp;
-  reservesManaged.save();
+  //0xe6295201cd1ff13ced5f063a5421c39a1d236f1c
+  if(event.params.recipient.toHexString()=="0xe6295201cd1ff13ced5f063a5421c39a1d236f1c"){
+    return;
+  }
+  rewardsMintedAdded(toDecimal(event.params.amount, 9),event.params.caller,event.params.recipient,event.block.timestamp)
 }
 
 export function handleWithdrawal(event: Withdrawal): void {
