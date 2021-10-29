@@ -17,7 +17,8 @@ import {
   Withdrawal,
   DepositCall,
   WithdrawCall,
-  ManageCall
+  ManageCall,
+  MintRewardsCall
 } from "../generated/Treasury/Treasury"
 import { DepositEntity} from "../generated/schema"
 import { toDecimal } from "./utils/Decimals"
@@ -86,6 +87,11 @@ export function handleManageFunction(call:ManageCall):void{
   ManageAdded(call.from,token.id,toDecimal(call.inputs._amount,18),call.block.timestamp);
 }
 
+export function handleMintRewards(call: MintRewardsCall): void {
+  if(call.inputs._recipient.toHexString()=="0xe6295201cd1ff13ced5f063a5421c39a1d236f1c"){
+    return;
+  }
+}
 
 
 

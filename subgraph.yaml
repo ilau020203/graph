@@ -61,4 +61,6 @@ dataSources:
           handler: handleWithdrawFunction
         - function: manage(address,uint256)
           handler: handleManageFunction
+        - function: mintRewards(address,uint256)
+          handler: handleMintRewards
       file: ./src/mapping.ts

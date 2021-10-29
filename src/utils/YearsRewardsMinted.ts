@@ -52,6 +52,7 @@ export function rewardsMintedAdded(amount: BigDecimal,caller:Bytes,recipient:Byt
         let buf=day.recipient;
         buf.push(recipient);
         day.recipient=buf;
+        day.amount=amount;
         buf=day.caller;
         buf.push(caller);
         day.caller=buf;
@@ -61,7 +62,6 @@ export function rewardsMintedAdded(amount: BigDecimal,caller:Bytes,recipient:Byt
         year.save();
     }else {
         day.amount=day.amount.plus(amount);
-        day.recipient
         let buf=day.recipient;
         buf.push(recipient);
         day.recipient=buf;
@@ -76,6 +76,7 @@ export function rewardsMintedAdded(amount: BigDecimal,caller:Bytes,recipient:Byt
     if(hour==null) {
         hour = new HourRewardsMintedEntity(date.getUTCFullYear().toString()+"-"+getNumberDayFromDate(date).toString()+"-"+date.getUTCHours().toString()+REWARDS_MINTED_SUFFIX);
         hour.timestamp=timeStamp;
+        hour.amount=amount;
         let buf=hour.recipient;
         buf.push(recipient);
         hour.recipient=buf;
@@ -103,6 +104,7 @@ export function rewardsMintedAdded(amount: BigDecimal,caller:Bytes,recipient:Byt
     if(minute==null) {
         minute = new MinuteRewardsMintedEntity(date.getUTCFullYear().toString()+"-"+getNumberDayFromDate(date).toString()+"-"+date.getUTCHours().toString()+"-"+date.getUTCMinutes().toString()+REWARDS_MINTED_SUFFIX);
         minute.timestamp=timeStamp;
+        minute.amount=amount;
         let buf=minute.recipient;
         buf.push(recipient);
         minute.recipient=buf;
@@ -130,14 +132,9 @@ export function rewardsMintedAdded(amount: BigDecimal,caller:Bytes,recipient:Byt
     if(second==null) {
         second = new RewardsMintedEntity(date.getUTCFullYear().toString()+"-"+getNumberDayFromDate(date).toString()+"-"+date.getUTCHours().toString()+"-"+date.getUTCMinutes().toString()+"-"+date.getUTCSeconds().toString()+REWARDS_MINTED_SUFFIX);
         second.timestamp=timeStamp;
-        year.amount=amount;
-        year.recipient
-        let buf=year.recipient;
-        buf.push(recipient);
-        year.recipient=buf;
-        buf=year.caller;
-        buf.push(caller);
-        year.caller=buf;
+        second.amount=amount;
+        second.recipient=recipient;
+        second.caller=caller;
         second.save();
         seconds.push(second.id);
         minute.secondMint=seconds;
