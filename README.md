@@ -15,3 +15,6 @@
 
 ## Entity nesting
 We use nesting of entities, since this allows us to bypass the limitation of the `first` command by 1000 elements and this allows us to get all the necessary data from the subgaph in one request.
+
+## hosted 
+`https://api.thegraph.com/subgraphs/id/QmbLbV9gdcw1xZ5rFbmg5NmafybZC6fd5PYoV4HzCUgyXJ`
